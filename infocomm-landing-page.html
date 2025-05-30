@@ -477,10 +477,10 @@
             try {
                 // Here you'll need to replace this with your actual endpoint
                 // This could be a webhook URL from Pipedrive, Zapier, or your own backend
-                const response = await fetch('YOUR_WEBHOOK_URL_HERE', {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbx9Bz0FJwN2KInf5wF_813vCGic0YmlQ-xol-FFlT0gXqRUlowuGm_ilVO8GyXYpr6reQ/exec', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'text/plain', // Changed to text/plain for CORS
                     },
                     body: JSON.stringify(formData)
                 });
