@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prestige Labor Solutions - InfoComm Orlando 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .grid-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #ffb700, transparent);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .grid-line:nth-child(1) {
+            width: 1px;
+            height: 100%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .grid-line:nth-child(2) {
+            width: 1px;
+            height: 100%;
+            left: 40%;
+            animation-delay: 0.5s;
+        }
+
+        .grid-line:nth-child(3) {
+            width: 1px;
+            height: 100%;
+            left: 60%;
+            animation-delay: 1s;
+        }
+
+        .grid-line:nth-child(4) {
+            width: 1px;
+            height: 100%;
+            left: 80%;
+            animation-delay: 1.5s;
+        }
+
+        .grid-line:nth-child(5) {
+            width: 100%;
+            height: 1px;
+            top: 25%;
+            animation-delay: 2s;
+        }
+
+        .grid-line:nth-child(6) {
+            width: 100%;
+            height: 1px;
+            top: 50%;
+            animation-delay: 2.5s;
+        }
+
+        .grid-line:nth-child(7) {
+            width: 100%;
+            height: 1px;
+            top: 75%;
+            animation-delay: 3s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .logo {
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIj4KICAgIDxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjU4IiBmaWxsPSIjMGEwYTBhIiBzdHJva2U9IiNmZmI3MDAiIHN0cm9rZS13aWR0aD0iMiIvPgogICAgPHBhdGggZD0iTTMwIDMwIGg2MCBNMzAgNjAgaDYwIE0zMCA5MCBoNjAgTTMwIDMwIHY2MCBNMCA2MCBoNjAgTTkwIDMwIHY2MCIgc3Ryb2tlPSIjZmZiNzAwIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuNSIvPgogICAgPHRleHQgeD0iNjAiIHk9IjgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNTAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjZmZiNzAwIj5QPC90ZXh0Pgo8L3N2Zz4=') no-repeat center;
+            background-size: contain;
+            filter: drop-shadow(0 0 20px rgba(255, 183, 0, 0.5));
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 20px rgba(255, 183, 0, 0.3)); }
+            to { filter: drop-shadow(0 0 30px rgba(255, 183, 0, 0.6)); }
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffb700, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .event-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(255, 183, 0, 0.1);
+            border: 1px solid rgba(255, 183, 0, 0.3);
+            border-radius: 25px;
+            font-size: 14px;
+            color: #ffb700;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .tagline {
+            color: #999;
+            font-size: 16px;
+            margin-top: 10px;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 183, 0, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 183, 0, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #ccc;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 183, 0, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #ffb700;
+            background: rgba(255, 183, 0, 0.05);
+            box-shadow: 0 0 20px rgba(255, 183, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        input:focus + label {
+            color: #ffb700;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #ffb700, #ff9500);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 183, 0, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            animation: fadeInScale 0.5s ease-out;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            animation: successPulse 1s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 14px;
+            animation: fadeIn 1s ease-out 1s both;
+        }
+
+        .footer a {
+            color: #ffb700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #ffd700;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #000;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .submit-btn {
+                font-size: 16px;
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo"></div>
+            </div>
+            <div class="event-badge">InfoComm 2025 • Orlando, FL</div>
+            <h1>Prestige Labor Solutions</h1>
+            <p class="tagline">Your Premier Labor Partner for AV Events</p>
+        </div>
+
+        <div class="form-container">
+            <form id="leadForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="John Smith">
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company" required placeholder="ABC Productions">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="john@company.com">
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Get Your Rate Sheet
+                </button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">✓</div>
+                <h2 style="margin-bottom: 10px;">Thank You!</h2>
+                <p style="color: #999;">Your rate sheet has been sent to your email.</p>
+                <p style="color: #666; font-size: 14px; margin-top: 10px;">We'll be in touch shortly!</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Questions? Email us at <a href="mailto:kyle@prestigelaborsolutions.com">kyle@prestigelaborsolutions.com</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Local storage management for iPad kiosk mode
+        const STORAGE_KEY = 'prestige_infocomm_leads';
+        const BACKUP_STORAGE_KEY = 'prestige_infocomm_leads_backup';
+        
+        // Initialize local storage if not exists
+        function initializeLocalStorage() {
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+            }
+            if (!localStorage.getItem(BACKUP_STORAGE_KEY)) {
+                localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify([]));
+            }
+        }
+        
+        // Save lead to local storage
+        function saveLeadLocally(formData) {
+            try {
+                // Get existing leads
+                const leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                const backupLeads = JSON.parse(localStorage.getItem(BACKUP_STORAGE_KEY) || '[]');
+                
+                // Add unique ID to the lead
+                formData.localId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                formData.syncStatus = 'pending';
+                formData.deviceId = getDeviceId();
+                
+                // Add to both primary and backup storage
+                leads.push(formData);
+                backupLeads.push(formData);
+                
+                // Save to localStorage
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+                localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(backupLeads));
+                
+                // Also try to save to IndexedDB for extra redundancy
+                saveToIndexedDB(formData);
+                
+                return true;
+            } catch (error) {
+                console.error('Error saving to local storage:', error);
+                return false;
+            }
+        }
+        
+        // Get or create device ID for tracking which iPad collected the lead
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('device_id');
+            if (!deviceId) {
+                deviceId = 'iPad_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('device_id', deviceId);
+            }
+            return deviceId;
+        }
+        
+        // IndexedDB setup for additional backup
+        let db;
+        function initIndexedDB() {
+            const request = indexedDB.open('PrestigeLeadsDB', 1);
+            
+            request.onerror = function() {
+                console.log('IndexedDB not available');
+            };
+            
+            request.onsuccess = function(event) {
+                db = event.target.result;
+            };
+            
+            request.onupgradeneeded = function(event) {
+                db = event.target.result;
+                if (!db.objectStoreNames.contains('leads')) {
+                    const objectStore = db.createObjectStore('leads', { keyPath: 'localId' });
+                    objectStore.createIndex('timestamp', 'timestamp', { unique: false });
+                    objectStore.createIndex('syncStatus', 'syncStatus', { unique: false });
+                }
+            };
+        }
+        
+        // Save to IndexedDB
+        function saveToIndexedDB(formData) {
+            if (!db) return;
+            
+            const transaction = db.transaction(['leads'], 'readwrite');
+            const objectStore = transaction.objectStore('leads');
+            objectStore.add(formData);
+        }
+        
+        // Mark lead as synced
+        function markLeadAsSynced(localId) {
+            try {
+                const leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                const updatedLeads = leads.map(lead => {
+                    if (lead.localId === localId) {
+                        lead.syncStatus = 'synced';
+                        lead.syncedAt = new Date().toISOString();
+                    }
+                    return lead;
+                });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedLeads));
+            } catch (error) {
+                console.error('Error updating sync status:', error);
+            }
+        }
+        
+        // Get all unsynced leads
+        function getUnsyncedLeads() {
+            try {
+                const leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                return leads.filter(lead => lead.syncStatus === 'pending');
+            } catch (error) {
+                console.error('Error getting unsynced leads:', error);
+                return [];
+            }
+        }
+        
+        // Attempt to sync leads when online
+        async function syncLeads() {
+            if (!navigator.onLine) return;
+            
+            const unsyncedLeads = getUnsyncedLeads();
+            
+            for (const lead of unsyncedLeads) {
+                try {
+                    const response = await fetch('YOUR_WEBHOOK_URL_HERE', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(lead)
+                    });
+                    
+                    if (response.ok) {
+                        markLeadAsSynced(lead.localId);
+                    }
+                } catch (error) {
+                    console.error('Error syncing lead:', error);
+                }
+            }
+        }
+        
+        // Initialize everything when page loads
+        initializeLocalStorage();
+        initIndexedDB();
+        
+        // Periodically attempt to sync leads
+        setInterval(syncLeads, 30000); // Every 30 seconds
+        
+        // Sync when coming back online
+        window.addEventListener('online', syncLeads);
+        
+        // Form submission handler
+        document.getElementById('leadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Saving...';
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value,
+                company: document.getElementById('company').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                source: 'InfoComm Orlando 2025',
+                timestamp: new Date().toISOString()
+            };
+
+            // ALWAYS save locally first
+            const savedLocally = saveLeadLocally(formData);
+            
+            if (!savedLocally) {
+                alert('Error saving information. Please try again.');
+                submitBtn.textContent = originalText;
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // Try to send to server if online
+            let sentToServer = false;
+            if (navigator.onLine) {
+                try {
+                    const response = await fetch('YOUR_WEBHOOK_URL_HERE', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok) {
+                        sentToServer = true;
+                        markLeadAsSynced(formData.localId);
+                    }
+                } catch (error) {
+                    console.error('Error sending to server:', error);
+                }
+            }
+
+            // Always show success (data is saved locally)
+            document.getElementById('leadForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Update success message based on sync status
+            const successMessage = document.getElementById('successMessage');
+            if (!navigator.onLine || !sentToServer) {
+                successMessage.innerHTML += '<p style="color: #ffb700; font-size: 12px; margin-top: 15px;">📱 Saved locally. Will sync when connection is available.</p>';
+            }
+            
+            // Reset form for next person after 5 seconds
+            setTimeout(() => {
+                document.getElementById('leadForm').reset();
+                document.getElementById('leadForm').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+                submitBtn.textContent = originalText;
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                // Remove any offline message
+                const offlineMsg = successMessage.querySelector('p[style*="ffb700"]');
+                if (offlineMsg) offlineMsg.remove();
+            }, 5000);
+        });
+
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = `(${value}`;
+                } else if (value.length <= 6) {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                } else {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                }
+            }
+            e.target.value = value;
+        });
+
+        // Add subtle animation on input focus
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Admin panel for viewing stored leads (access with triple-tap on logo)
+        let tapCount = 0;
+        let tapTimer;
+        document.querySelector('.logo-container').addEventListener('click', function() {
+            tapCount++;
+            clearTimeout(tapTimer);
+            
+            if (tapCount === 3) {
+                showAdminPanel();
+                tapCount = 0;
+            }
+            
+            tapTimer = setTimeout(() => {
+                tapCount = 0;
+            }, 500);
+        });
+        
+        function showAdminPanel() {
+            const leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const backupLeads = JSON.parse(localStorage.getItem(BACKUP_STORAGE_KEY) || '[]');
+            const deviceId = getDeviceId();
+            
+            const panel = document.createElement('div');
+            panel.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.95);
+                z-index: 9999;
+                overflow: auto;
+                padding: 20px;
+            `;
+            
+            panel.innerHTML = `
+                <div style="max-width: 800px; margin: 0 auto; background: #1a1a1a; padding: 30px; border-radius: 10px;">
+                    <h2 style="color: #ffb700; margin-bottom: 20px;">Admin Panel - Stored Leads</h2>
+                    <p style="color: #999; margin-bottom: 10px;">Device ID: ${deviceId}</p>
+                    <p style="color: #999; margin-bottom: 20px;">Total Leads: ${leads.length} | Backup Count: ${backupLeads.length}</p>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <button onclick="exportLeadsCSV()" style="background: #ffb700; color: #000; padding: 10px 20px; border: none; border-radius: 5px; margin-right: 10px; cursor: pointer;">Export CSV</button>
+                        <button onclick="syncLeads()" style="background: #4ade80; color: #000; padding: 10px 20px; border: none; border-radius: 5px; margin-right: 10px; cursor: pointer;">Sync Now</button>
+                        <button onclick="clearSyncedLeads()" style="background: #f59e0b; color: #000; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Clear Synced</button>
+                    </div>
+                    
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <table style="width: 100%; color: #ccc; font-size: 14px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #333;">
+                                    <th style="padding: 10px; text-align: left;">Name</th>
+                                    <th style="padding: 10px; text-align: left;">Company</th>
+                                    <th style="padding: 10px; text-align: left;">Email</th>
+                                    <th style="padding: 10px; text-align: left;">Phone</th>
+                                    <th style="padding: 10px; text-align: left;">Status</th>
+                                    <th style="padding: 10px; text-align: left;">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${leads.map(lead => `
+                                    <tr style="border-bottom: 1px solid #222;">
+                                        <td style="padding: 10px;">${lead.name}</td>
+                                        <td style="padding: 10px;">${lead.company}</td>
+                                        <td style="padding: 10px;">${lead.email}</td>
+                                        <td style="padding: 10px;">${lead.phone}</td>
+                                        <td style="padding: 10px;">
+                                            <span style="color: ${lead.syncStatus === 'synced' ? '#4ade80' : '#f59e0b'};">
+                                                ${lead.syncStatus}
+                                            </span>
+                                        </td>
+                                        <td style="padding: 10px; font-size: 12px;">${new Date(lead.timestamp).toLocaleString()}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <button onclick="this.closest('div[style*=fixed]').remove()" style="margin-top: 20px; background: #ef4444; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Close</button>
+                </div>
+            `;
+            
+            document.body.appendChild(panel);
+        }
+        
+        // Export leads to CSV
+        window.exportLeadsCSV = function() {
+            const leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            let csv = 'Name,Company,Email,Phone,Status,Timestamp,Device\n';
+            
+            leads.forEach(lead => {
+                csv += `"${lead.name}","${lead.company}","${lead.email}","${lead.phone}","${lead.syncStatus}","${lead.timestamp}","${lead.deviceId}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `prestige_leads_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        };
+        
+        // Clear synced leads from local storage
+        window.clearSyncedLeads = function() {
+            if (confirm('This will remove all synced leads from local storage. Continue?')) {
+                const leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                const unsyncedLeads = leads.filter(lead => lead.syncStatus !== 'synced');
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(unsyncedLeads));
+                location.reload();
+            }
+        };
+    </script>
+</body>
+</html>
