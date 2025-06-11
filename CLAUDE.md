@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a lead capture landing page for Prestige Labor Solutions (PLS) specifically designed for the InfoComm Orlando 2025 event. It's a single-page web application that collects visitor information and submits it to a Google Apps Script endpoint.
+This is a lead capture Progressive Web App (PWA) for Prestige Labor Solutions (PLS) specifically designed for the InfoComm Orlando 2025 event. It's a single-page web application that collects visitor information and submits it to a Google Apps Script endpoint.
 
 ## Architecture
 
@@ -12,6 +12,9 @@ The project consists of:
 - `index.html`: Single HTML file containing all HTML, CSS, and JavaScript
 - `PLS Logo SVF.svg`: Company logo asset
 - `notes.md`: Contains the Google Apps Script webhook URL for form submissions
+- `manifest.json`: PWA manifest for installable web app functionality
+- `service-worker.js`: Service worker for offline caching
+- `appscript.js`: Google Apps Script backend code (deployed separately)
 
 ### Key Components
 
@@ -27,7 +30,7 @@ The project consists of:
    - User fills out form with name, company, phone, and email
    - Data is ALWAYS saved locally first (offline-first approach)
    - If online, attempts to sync to Google Apps Script endpoint
-   - Endpoint URL: `https://script.google.com/macros/s/AKfycbx9Bz0FJwN2KInf5wF_813vCGic0YmlQ-xol-FFlT0gXqRUlowuGm_ilVO8GyXYpr6reQ/exec`
+   - Endpoint URL: `https://script.google.com/macros/s/AKfycbwuia7M7CxVgB1kYhkSmxYEsVPomWxyO8gc4TegDDI31uDVYztdyMwyWZxp2iAID-py/exec`
    - Data is sent as JSON with Content-Type: text/plain (for CORS compatibility)
    - Visual feedback shows sync status to users
 
@@ -44,17 +47,25 @@ The project consists of:
 
 This is a static HTML project with no build process. To develop:
 - Open `index.html` directly in a browser
-- Use a local web server (e.g., `python -m http.server 8000` or VS Code Live Server) for testing
+- Use a local web server for testing service worker: `python -m http.server 8000` or VS Code Live Server
 - No build, lint, or test commands required
+
+### Testing Offline Functionality
+1. Open the app in a browser with developer tools
+2. Go to Application tab > Service Workers
+3. Check "Offline" to simulate offline mode
+4. Form should continue working with local storage
 
 ## Important Considerations
 
-- The form submission endpoint is hardcoded in the JavaScript (line 579 and 641 of index.html)
+- The form submission endpoint is hardcoded in the JavaScript (search for "script.google.com" in index.html)
 - CORS is handled by using 'text/plain' content type when posting to Google Apps Script
 - No external dependencies or build tools required
 - All styling and functionality is contained within the single HTML file
 - Form data includes automatic timestamp and source tracking ('InfoComm Orlando 2025')
 - Google Analytics integration ready (checks for gtag presence)
+- Service worker requires HTTPS or localhost for security reasons
+- PWA installation requires valid manifest.json and registered service worker
 
 ## Admin Panel Access
 
@@ -75,3 +86,16 @@ Triple-tap the logo to access the hidden admin panel which provides:
 - Dual localStorage keys for redundancy
 - IndexedDB as additional backup layer
 - Unique device IDs for tracking which iPad collected each lead
+
+## Backend (Google Apps Script)
+
+The `appscript.js` file contains the server-side code that:
+- Receives POST requests with form data
+- Appends data to Google Sheets based on column headers
+- Sends automated emails with PDF attachments to leads
+- Returns JSON responses for success/error handling
+
+To deploy backend changes:
+1. Copy `appscript.js` content to Google Apps Script editor
+2. Deploy as web app with "Anyone" access
+3. Update webhook URL in `notes.md` and `index.html` if URL changes
