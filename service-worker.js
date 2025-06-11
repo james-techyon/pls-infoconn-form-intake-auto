@@ -1,9 +1,14 @@
-const CACHE_NAME = 'pls-leads-v2'; // Increment version to force cache update
+const CACHE_NAME = 'pls-leads-v3'; // Increment version to force cache update
+
+// Determine the base path based on the location
+const isGitHubPages = self.location.pathname.includes('/pls-infoconn-form-intake-auto/');
+const basePath = isGitHubPages ? '/pls-infoconn-form-intake-auto/' : '/';
+
 const urlsToCache = [
-  './',
-  './index.html',
-  './PLS Logo SVF.svg',
-  './manifest.json'
+  basePath,
+  basePath + 'index.html',
+  basePath + 'PLS Logo SVF.svg',
+  basePath + 'manifest.json'
 ];
 
 self.addEventListener('install', event => {
