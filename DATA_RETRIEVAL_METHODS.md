@@ -101,9 +101,65 @@ localStorage.setItem('prestige_infocomm_leads', JSON.stringify(leads));
 ```
 
 ## Method 5: Emergency Data Recovery Script
-If the admin panel is completely broken, inject this recovery script:
+If the admin panel is completely broken, inject this recovery script.
 
+### How to implement on iPad:
+
+#### Option A: Using Safari JavaScript Console (Requires Mac)
+1. Connect iPad to Mac via USB
+2. On iPad: Settings > Safari > Advanced > Web Inspector (ON)
+3. Open the PWA in Safari on iPad
+4. On Mac: Open Safari > Develop menu > [Your iPad] > [PWA Page]
+5. Copy and paste the recovery script into the console
+6. Press Enter to run
+
+#### Option B: Using Bookmarklet (Works directly on iPad)
+1. Copy this entire code as one line (remove line breaks):
 ```javascript
+javascript:(function(){const recovery=document.createElement('div');recovery.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:white;z-index:9999;padding:20px;overflow:auto';const primaryLeads=JSON.parse(localStorage.getItem('prestige_infocomm_leads')||'[]');const backupLeads=JSON.parse(localStorage.getItem('prestige_infocomm_leads_backup')||'[]');recovery.innerHTML=`<h1>Data Recovery</h1><p>Primary Storage: ${primaryLeads.length} leads</p><p>Backup Storage: ${backupLeads.length} leads</p><textarea style="width:100%;height:400px">${JSON.stringify(primaryLeads,null,2)}</textarea><br><button onclick="navigator.clipboard.writeText(this.previousElementSibling.value)" style="padding:10px;margin:10px 0;">Copy to Clipboard</button><br><button onclick="this.parentElement.remove()" style="padding:10px;">Close Recovery Panel</button>`;document.body.appendChild(recovery);})();
+```
+
+2. On iPad, create a new bookmark:
+   - Visit any website in Safari
+   - Tap the Share button
+   - Select "Add Bookmark"
+   - Name it "PLS Data Recovery"
+   - Save it
+3. Edit the bookmark:
+   - Go to Bookmarks
+   - Tap "Edit"
+   - Select the "PLS Data Recovery" bookmark
+   - Replace the URL with the JavaScript code above
+   - Save
+4. To use: Navigate to the PWA, then select the bookmark from your bookmarks
+
+#### Option C: Using a Simple HTML File
+1. Create an HTML file with this content:
+```html
+<!DOCTYPE html>
+<html>
+<head><title>PLS Data Recovery</title></head>
+<body>
+<h1>PLS Data Recovery Tool</h1>
+<button onclick="runRecovery()">Run Data Recovery</button>
+<script>
+function runRecovery() {
+    window.location.href = 'YOUR_PWA_URL_HERE#recovery';
+    setTimeout(() => {
+        // Recovery script here
+        const recovery = document.createElement('div');
+        // ... rest of recovery script
+    }, 1000);
+}
+</script>
+</body>
+</html>
+```
+
+2. Host this file or open it locally on the iPad
+3. Click the button to navigate to PWA and run recovery
+
+### The Recovery Script (Full Version):
 (function() {
     // Create recovery UI
     const recovery = document.createElement('div');
@@ -143,6 +199,55 @@ const deviceMap = {
 };
 
 console.log('This device belongs to:', deviceMap[deviceId] || 'Unknown');
+```
+
+## Method 7: Add Emergency Export Button to PWA
+For the easiest user experience, add this code to the PWA's HTML to create a permanent export button:
+
+```html
+<!-- Add this to index.html after the form -->
+<div style="position: fixed; bottom: 10px; right: 10px; opacity: 0.3;">
+    <button onclick="emergencyExport()" style="padding: 5px 10px; font-size: 12px;">
+        Emergency Export
+    </button>
+</div>
+
+<script>
+function emergencyExport() {
+    const leads = JSON.parse(localStorage.getItem('prestige_infocomm_leads') || '[]');
+    if (leads.length === 0) {
+        alert('No leads found to export');
+        return;
+    }
+    
+    // Create CSV
+    const csv = [
+        ['Name', 'Company', 'Email', 'Phone', 'Timestamp', 'Device ID', 'Sync Status'],
+        ...leads.map(l => [
+            l.name,
+            l.company,
+            l.email,
+            l.phone,
+            l.timestamp,
+            l.deviceId,
+            l.syncStatus
+        ])
+    ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    
+    // Download file
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `leads_emergency_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert(`Exported ${leads.length} leads to CSV file`);
+}
+</script>
 ```
 
 ## Best Practices
