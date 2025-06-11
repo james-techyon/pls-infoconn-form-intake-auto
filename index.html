@@ -475,15 +475,16 @@
         
         // Save lead to local storage
         function saveLeadLocally(formData) {
+            // Use existing submissionId as localId for consistency
+            formData.localId = formData.submissionId;
+            
+            let savedToLocalStorage = false;
+            
+            // Try localStorage (may be blocked in iframe)
             try {
                 // Get existing leads
                 const leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
                 const backupLeads = JSON.parse(localStorage.getItem(BACKUP_STORAGE_KEY) || '[]');
-                
-                // Add unique ID to the lead
-                formData.localId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                formData.syncStatus = 'pending';
-                formData.deviceId = getDeviceId();
                 
                 // Add to both primary and backup storage
                 leads.push(formData);
@@ -493,24 +494,43 @@
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
                 localStorage.setItem(BACKUP_STORAGE_KEY, JSON.stringify(backupLeads));
                 
-                // Also try to save to IndexedDB for extra redundancy
-                saveToIndexedDB(formData);
-                
-                return true;
+                savedToLocalStorage = true;
             } catch (error) {
-                console.error('Error saving to local storage:', error);
-                return false;
+                console.warn('localStorage not available:', error);
+                // Continue without localStorage
             }
+            
+            // Try IndexedDB
+            try {
+                saveToIndexedDB(formData);
+            } catch (error) {
+                console.warn('IndexedDB not available:', error);
+            }
+            
+            // Return true even if storage fails - we'll still try to submit
+            return savedToLocalStorage;
         }
         
         // Get or create device ID for tracking which iPad collected the lead
         function getDeviceId() {
-            let deviceId = localStorage.getItem('device_id');
-            if (!deviceId) {
-                deviceId = 'iPad_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('device_id', deviceId);
+            try {
+                let deviceId = localStorage.getItem('device_id');
+                if (!deviceId) {
+                    deviceId = 'iPad_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    try {
+                        localStorage.setItem('device_id', deviceId);
+                    } catch (e) {
+                        console.warn('Could not save device ID to localStorage:', e);
+                    }
+                }
+                return deviceId;
+            } catch (error) {
+                // If localStorage is blocked (iframe), generate a session-based ID
+                if (!window.sessionDeviceId) {
+                    window.sessionDeviceId = 'Web_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                }
+                return window.sessionDeviceId;
             }
-            return deviceId;
         }
         
         // IndexedDB setup for additional backup
@@ -619,48 +639,60 @@
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
 
-            // Collect form data
+            // Collect form data with unique submission ID
             const formData = {
                 name: document.getElementById('name').value,
                 company: document.getElementById('company').value,
                 phone: document.getElementById('phone').value,
                 email: document.getElementById('email').value,
-                source: 'InfoComm Orlando 2025',
-                timestamp: new Date().toISOString()
+                source: window.iframeSource || 'InfoComm Orlando 2025',
+                timestamp: new Date().toISOString(),
+                submissionId: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                deviceId: getDeviceId(),
+                syncStatus: 'pending'
             };
 
-            // ALWAYS save locally first
+            // Try to save locally (may fail in iframe context)
             const savedLocally = saveLeadLocally(formData);
             
-            if (!savedLocally) {
-                alert('Error saving information. Please try again.');
-                submitBtn.textContent = originalText;
-                submitBtn.classList.remove('loading');
-                submitBtn.disabled = false;
-                return;
-            }
-
-            // Try to send to server if online
+            // ALWAYS try to send to server regardless of local save or online status
             let sentToServer = false;
-            if (navigator.onLine) {
-                try {
-                    console.log('Submitting form data:', formData);
-                    const response = await fetch('https://script.google.com/macros/s/AKfycbwuia7M7CxVgB1kYhkSmxYEsVPomWxyO8gc4TegDDI31uDVYztdyMwyWZxp2iAID-py/exec', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain', // Changed to text/plain for CORS
-                        },
-                        body: JSON.stringify(formData)
-                    });
-                    console.log('Response status:', response.status);
-
-                    if (response.ok) {
-                        sentToServer = true;
-                        markLeadAsSynced(formData.localId);
+            
+            // Always attempt server submission
+            try {
+                console.log('Submitting form data:', formData);
+                console.log('Running in iframe:', isInIframe());
+                console.log('Online status:', navigator.onLine);
+                
+                const response = await fetch('https://script.google.com/macros/s/AKfycbwuia7M7CxVgB1kYhkSmxYEsVPomWxyO8gc4TegDDI31uDVYztdyMwyWZxp2iAID-py/exec', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain', // Changed to text/plain for CORS
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                console.log('Response received:', response);
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (response.ok || response.status === 0) { // status 0 for no-cors responses
+                    sentToServer = true;
+                    // Try to mark as synced if we have local storage
+                    if (savedLocally && formData.localId) {
+                        try {
+                            markLeadAsSynced(formData.localId);
+                        } catch (e) {
+                            console.warn('Could not update sync status:', e);
+                        }
                     }
-                } catch (error) {
-                    console.error('Error sending to server:', error);
+                    console.log('Form submitted successfully');
+                } else {
+                    console.error('Server responded with status:', response.status);
                 }
+            } catch (error) {
+                console.error('Error sending to server:', error);
+                console.error('Error details:', error.message, error.stack);
             }
 
             // Always show success (data is saved locally)
@@ -669,7 +701,8 @@
             
             // Update success message based on sync status
             const successMessage = document.getElementById('successMessage');
-            if (!navigator.onLine || !sentToServer) {
+            if (!isInIframe() && (!navigator.onLine || !sentToServer)) {
+                // Only show offline message if not in iframe
                 successMessage.innerHTML += '<p style="color: #ffb700; font-size: 12px; margin-top: 15px;">📱 Saved locally. Will sync when connection is available.</p>';
             }
             
@@ -834,8 +867,24 @@
             }
         };
 
-        // Register service worker for offline functionality
-        if ('serviceWorker' in navigator) {
+        // Detect if running in iframe
+        function isInIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+
+        // Add source tracking for iframe
+        if (isInIframe()) {
+            console.log('Form loaded in iframe from:', document.referrer);
+            // Override source for iframe submissions
+            window.iframeSource = 'Website Rate Sheet Page';
+        }
+
+        // Register service worker for offline functionality (skip in iframe)
+        if ('serviceWorker' in navigator && !isInIframe()) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('./service-worker.js', { scope: './' })
                     .then(function(registration) {

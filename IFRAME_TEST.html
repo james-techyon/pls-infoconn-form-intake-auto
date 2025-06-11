@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+        }
+        iframe {
+            width: 100%;
+            height: 800px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .info {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PLS Form Iframe Test</h1>
+        
+        <div class="info">
+            <h2>Test Instructions:</h2>
+            <ol>
+                <li>Open browser developer console (F12)</li>
+                <li>Fill out and submit the form below</li>
+                <li>Check console for any errors</li>
+                <li>Verify data appears in Google Sheet</li>
+            </ol>
+            <div id="status" class="status">Ready to test...</div>
+        </div>
+
+        <h2>Embedded Form:</h2>
+        <iframe 
+            src="https://james-techyon.github.io/pls-infoconn-form-intake-auto/"
+            title="PLS Lead Capture Form"
+            id="plsForm">
+        </iframe>
+    </div>
+
+    <script>
+        // Listen for console messages from iframe
+        const originalLog = console.log;
+        const originalError = console.error;
+        const statusDiv = document.getElementById('status');
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('form')) {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = 'LOG: ' + args.join(' ');
+            }
+        };
+
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            statusDiv.className = 'status error';
+            statusDiv.textContent = 'ERROR: ' + args.join(' ');
+        };
+
+        // Test iframe communication
+        window.addEventListener('load', function() {
+            const iframe = document.getElementById('plsForm');
+            console.log('Iframe loaded from:', iframe.src);
+            console.log('Current page:', window.location.href);
+        });
+    </script>
+</body>
+</html>
