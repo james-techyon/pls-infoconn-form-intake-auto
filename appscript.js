@@ -14,7 +14,8 @@ function doGet(e) {
     var data;
   
     try {
-      sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+      var spreadsheetId = '1rS4v56_fza4F1B-wuBz4VXG2tM2fmk2NRh1t6jMQCLc';
+      sheet = SpreadsheetApp.openById(spreadsheetId).getActiveSheet();
       Logger.log('Active sheet retrieved: ' + sheet.getName());
   
       headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
