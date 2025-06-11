@@ -4,16 +4,17 @@ function doGet(e) {
     // Handle alternate submission methods (beacon, JSONP)
     if (e.parameter && (e.parameter.beacon || e.parameter.callback || e.parameter.name)) {
       try {
-        // Reconstruct form data from URL parameters
+        // Reconstruct form data from URL parameters (supporting both full and shortened names)
         var formData = {
           name: e.parameter.name || e.parameter.n || '',
           company: e.parameter.company || e.parameter.c || '',
           email: e.parameter.email || e.parameter.e || '',
           phone: e.parameter.phone || e.parameter.p || '',
-          timestamp: e.parameter.timestamp || new Date().toISOString(),
-          source: e.parameter.source || 'GET Request',
-          submissionId: e.parameter.submissionId || e.parameter.t || (Date.now() + '_' + Math.random().toString(36).substring(2, 11)),
-          deviceId: e.parameter.deviceId || 'Unknown',
+          timestamp: e.parameter.timestamp || e.parameter.t || new Date().toISOString(),
+          source: e.parameter.source || 'GET Request (Cellular)',
+          submissionId: e.parameter.submissionId || e.parameter.s || (Date.now() + '_' + Math.random().toString(36).substring(2, 11)),
+          deviceId: e.parameter.deviceId || e.parameter.d || 'Unknown',
+          preferredSender: e.parameter.preferredSender || e.parameter.ps || 'Kyle',
           syncStatus: 'synced'
         };
         
@@ -144,15 +145,34 @@ function doGet(e) {
         sheet.appendRow(newRow);
         Logger.log('Successfully appended row to sheet.');
         
-        // Send email notification
+        // Send email notification - DISABLED
+        /* 
         try {
           var recipientEmail = data.email;
           if (recipientEmail && isValidEmail(recipientEmail)) {
-              // Determine sender email based on deviceId
+              // Determine sender email - preferredSender takes priority over deviceId mapping
               var senderEmail = "Kyle@prestigelaborsolutions.com"; // Default sender
               var senderName = "Kyle"; // Default name
               
-              if (data.deviceId) {
+              // Check if preferredSender is provided
+              if (data.preferredSender) {
+                switch(data.preferredSender) {
+                  case "Javier":
+                    senderEmail = "Javier@prestigelaborsolutions.com";
+                    senderName = "Javier";
+                    break;
+                  case "Kevin":
+                    senderEmail = "Kevin@prestigelaborsolutions.com";
+                    senderName = "Kevin";
+                    break;
+                  case "Kyle":
+                  default:
+                    senderEmail = "Kyle@prestigelaborsolutions.com";
+                    senderName = "Kyle";
+                    break;
+                }
+              } else if (data.deviceId) {
+                // Fallback to deviceId mapping if no preferredSender
                 switch(data.deviceId) {
                   case "iPad_1749611604926_nh392j54n":
                     senderEmail = "Javier@prestigelaborsolutions.com";
@@ -183,7 +203,7 @@ function doGet(e) {
               Logger.log('Sending email from: ' + senderEmail + ' for deviceId: ' + (data.deviceId || 'not provided'));
               
               var subject = "Your Prestige Labor Solutions Information Package";
-              var body = "Thank you for your interest in Prestige Labor Solutions.\n\nPlease find attached our rate sheets and servicing cities information.\n\nIf you have any questions, please don't hesitate to reach out to me directly at " + senderEmail + ".\n\nBest regards,\n" + senderName + "\nPrestige Labor Solutions Team\n\n" + senderEmail;
+              var body = "Thank you for your interest in Prestige Labor Solutions.\n\nPlease find attached our rate sheets and servicing cities information.\n\nIf you have any questions, please don't hesitate to reach out to me directly at " + senderEmail + ".\n\nBest regards,\n" + senderName + "\nPrestige Labor Solutions Team\n\n";
               
               // Get all files from the specified folder
               var folderId = "1fuoFQB1PwFpT3SpCuz1cNzM1pUBkP_04"; // Folder ID from the provided link
@@ -239,6 +259,7 @@ function doGet(e) {
           Logger.log('Error sending email: ' + emailError.toString());
           // Continue - don't fail the whole submission due to email error
         }
+        */
         
         return { 
           'result': 'success', 
