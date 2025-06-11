@@ -71,6 +71,14 @@ function doGet(e) {
                     senderEmail = "Kyle@prestigelaborsolutions.com";
                     senderName = "Kyle";
                     break;
+                  case "iPad_1749654119869_gojlr3bl2":
+                    senderEmail = "Kevin@prestigelaborsolutions.com";
+                    senderName = "Kevin";
+                    break;
+                  case "iPad_1749653704798_kjd48azvq":
+                    senderEmail = "Javier@prestigelaborsolutions.com";
+                    senderName = "Javier";
+                    break;
                   default:
                     // Keep default (Kyle)
                     break;
