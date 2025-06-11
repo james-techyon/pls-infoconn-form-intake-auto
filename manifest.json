@@ -1,0 +1,10 @@
+{
+  "name": "Prestige Labor Solutions - Lead Capture",
+  "short_name": "PLS Leads",
+  "description": "Lead capture app for Prestige Labor Solutions at InfoComm Orlando 2025",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#ffb700",
+  "orientation": "portrait"
+}
