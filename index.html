@@ -668,7 +668,6 @@
                 console.log('Attempting standard POST submission...');
                 response = await fetch('https://script.google.com/macros/s/AKfycbwuia7M7CxVgB1kYhkSmxYEsVPomWxyO8gc4TegDDI31uDVYztdyMwyWZxp2iAID-py/exec', {
                     method: 'POST',
-                    mode: 'no-cors', // Force no-cors for cellular compatibility
                     headers: {
                         'Content-Type': 'text/plain',
                     },
@@ -677,18 +676,17 @@
                 
                 console.log('POST response:', response.type, response.status);
                 
-                // With no-cors, we can't read the response, so we can't verify success
-                // Don't assume success based on status 0!
-                if (response.type === 'opaque') {
-                    console.warn('Cannot verify submission (CORS blocked) - may use beacon backup');
+                if (response.ok || response.status === 0) { // status 0 for CORS responses
+                    sentToServer = true;
+                    console.log('POST submission successful');
                 }
             } catch (error) {
                 console.error('POST submission failed:', error);
                 postFailed = true;
             }
             
-            // Method 2: Use beacon as backup ONLY if POST might have failed
-            if (!navigator.onLine || postFailed || (response && response.type === 'opaque')) {
+            // Method 2: Use beacon as backup ONLY if POST actually failed
+            if (!sentToServer && (postFailed || !navigator.onLine)) {
                 try {
                     console.log('Using beacon as backup...');
                     // Truncate data to fit URL limits
